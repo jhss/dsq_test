@@ -3,7 +3,7 @@ import torch
 from modules import *
 
 base_path = "/home/dsq_test"
-bit=8
+bit=16
 
 # 1. load input
 input_int = torch.load(f"{base_path}/data/qk_int.pt", weights_only=True)
@@ -31,7 +31,7 @@ print("[DEBUG] input float: ", input_float_subtract)
 print("[DEBUG] input quant: ", subtract_quant_req)
 print("[DEBUG] input_diff max: ", input_diff.max().item(), ", ", input_diff.mean().item())
 print("=========================================================================")
-exp_int, exp_scale = int_exp_shift(subtract_int_req, subtract_scale)
+exp_int, exp_scale = ibert_exp(subtract_int_req, subtract_scale)
 
 # # 3. Calculate torch float exp
 exp_float = torch.exp(input_float_subtract)
@@ -50,6 +50,7 @@ print("max_idx: ", max_idx)
 
 # # 6. Compare exp quant and float at maximum idx
 max_idx = max_idx[0]
+print("[DEBUG] exp input max : ", input_float_subtract[max_idx[0], max_idx[1], max_idx[2], 45:48])
 print("[DEBUG] exp quant max idx: ", exp_quant[max_idx[0], max_idx[1], max_idx[2], 45:48])
 print("[DEBUG] exp float max idx: ", exp_float[max_idx[0], max_idx[1], max_idx[2], 45:48])
 print("=========================================================================")
