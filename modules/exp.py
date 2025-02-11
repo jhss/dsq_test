@@ -50,14 +50,14 @@ def int_exp_poly(x_int, scaling_factor):
         x0 = -0.6931  # -ln2
         n = 30  # sufficiently large integer
         x0_int = torch.floor(x0 / scaling_factor)
-        print("before clamp x_int: ", x_int[  0,   0,   4,  45:48])
-        print("x0_int: ", x0_int)
+        #print("before clamp x_int: ", x_int[  0,   0,   4,  45:48])
+        #print("x0_int: ", x0_int)
         x_int = torch.max(x_int, n * x0_int)
-        print("after clamp x_int: ", x_int[  0,   0,   4,  45:48])
+        #print("after clamp x_int: ", x_int[  0,   0,   4,  45:48])
         q = torch.floor(x_int / x0_int)
-        print("q: ", q[  0,   0,   4,  45:48])
+        print("q: ", q)
         r = x_int - x0_int * q
-        print("r: ", q[  0,   0,   4,  45:48])
+        print("r: ", r)
         exp_int, exp_scaling_factor = int_polynomial(r, scaling_factor)
         exp_int = torch.clamp(torch.floor(exp_int * 2**(n - q)), min=0)
         scaling_factor = exp_scaling_factor / 2**n
